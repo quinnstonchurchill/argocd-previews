@@ -1,3 +1,4 @@
+# template for deploying a new preview environment for each PR
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -9,7 +10,7 @@ spec:
   project: previews
   source:
     path: helm
-    repoURL: https://github.com/vfarcic/{{.REPO}}.git
+    repoURL: https://github.com/quinnstonchurchill/{{.REPO}}.git
     targetRevision: HEAD
     helm:
       values: |
@@ -26,4 +27,4 @@ spec:
       selfHeal: true
       prune: true
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true

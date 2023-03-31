@@ -1,3 +1,4 @@
+# ArgoCD project that allows ArgoCD to create namespaces starting with pr-*
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -8,18 +9,17 @@ metadata:
 spec:
   description: Previews
   sourceRepos:
-  - '*'
+    - "*"
   destinations:
-  - namespace: previews
-    server: https://kubernetes.default.svc
-  - namespace: "pr-*"
-    server: https://kubernetes.default.svc
-  - namespace: argocd
-    server: https://kubernetes.default.svc
+    - namespace: previews
+      server: https://kubernetes.default.svc
+    - namespace: "pr-*"
+      server: https://kubernetes.default.svc
+    - namespace: argocd
+      server: https://kubernetes.default.svc
   clusterResourceWhitelist:
-  - group: ''
-    kind: Namespace
+    - group: ""
+      kind: Namespace
   namespaceResourceWhitelist:
-  - group: "*"
-    kind: "*"
-
+    - group: "*"
+      kind: "*"
