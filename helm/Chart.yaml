@@ -1,5 +1,4 @@
 apiVersion: v1
 description: Previews environment
-name: previews
+name: web-previews
 version: "0.1.0"
-

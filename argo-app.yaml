@@ -1,16 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: previews
+  name: web-previews
   namespace: argocd
+  # Adding the finalizer enables cascading deletes when implementing the App of Apps pattern.
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: previews
+  project: web-previews
   source:
     repoURL: https://github.com/quinnstonchurchill/argocd-previews.git
     targetRevision: HEAD
     path: helm
   destination:
     server: https://kubernetes.default.svc
-    namespace: previews
+    namespace: web-previews
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true

@@ -1,0 +1,55 @@
+# https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: web-previews
+  namespace: argocd
+spec:
+  generators:
+    - pullRequest:
+        # When using a Pull Request generator, the ApplicationSet controller polls every `requeueAfterSeconds` interval (defaulting to every 30 minutes) to detect changes.
+        requeueAfterSeconds: 300
+        # Specify which repo's pull requests we want to watch
+        github:
+          # Github organization
+          owner: quinnstonchurchill
+          # repo: node-hello-world
+          # use this if you want to create separate PRs in ops repo
+          repo: argocd-previews
+          # Filter the PRs that you want to target. (optional)
+          labels:
+            - preview
+          # TODO
+          # tokenRef:
+          #   secretName: github-token
+          #   key: token
+  # template for each ArgoCD app to create
+  # https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Template/
+  template:
+    metadata:
+      name: "web-pr-{{branch}}-{{number}}"
+      namespace: argocd
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      # https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Security/#templated-project-field
+      project: default
+      # which Git repository to extract the desired Application manifests
+      # should be ops repo if we're storing manifests here
+      source:
+        repoURL: https://github.com/quinnstonchurchill/argocd-previews.git
+        # SHA of the head of the pull request
+        targetRevision: "{{head_sha}}"
+        path: helm/
+      # Defines which Kubernetes cluster/namespace to deploy to
+      destination:
+        # TODO change to EKS url
+        server: https://kubernetes.default.svc
+        # create a new namespace for each preview app
+        namespace: "web-pr-{{branch}}-{{number}}"
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+        automated:
+          selfHeal: true
+          prune: true

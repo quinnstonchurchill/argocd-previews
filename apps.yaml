@@ -1,19 +1,23 @@
+# Creates app of apps that will be used mostly as a reference for it to know where to look for the applications related to preview environments
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: previews
+  name: web-previews
   namespace: argocd
+  # Adding the finalizer enables cascading deletes when implementing the App of Apps pattern.
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: previews
+  project: web-previews
   source:
+    # Monitors specified repo changes in helm directory at specific commit (HEAD)
     repoURL: https://github.com/quinnstonchurchill/argocd-previews.git
+    # source of truth for ArgoCD to sync changes
     targetRevision: HEAD
     path: helm
   destination:
     server: https://kubernetes.default.svc
-    namespace: previews
+    namespace: web-previews
   syncPolicy:
     automated:
       selfHeal: true

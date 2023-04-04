@@ -10,7 +10,8 @@ spec:
   project: previews
   source:
     path: helm
-    repoURL: https://github.com/quinnstonchurchill/{{.REPO}}.git
+    # should point to app repo you want to deploy from ie. node-hello-world
+    repoURL: https://github.com/quinnstonchurchill/node-hello-world.git
     targetRevision: HEAD
     helm:
       values: |
