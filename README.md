@@ -40,3 +40,18 @@ Verify that the app set was created
 ```
 kubectl get appsets -n argocd
 ```
+
+## Creating a PR preview
+
+In app repo...
+
+1. Build docker image
+2. Tag image with commit SHA
+3. Push images to container rep
+
+In ops repo...
+
+1. Create new branch matching app repo feature branch
+2. Update helm yaml with new image in helm/templates
+3. Commit and push
+4. Create PR with preview label

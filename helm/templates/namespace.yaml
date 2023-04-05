@@ -1,6 +1,6 @@
 # This should be empty BUT Helm does not allow us to deploy a chart without a definition so we use a dummy chart for initial setup:
 # kubectl apply -f apps.yaml
-apiVersion: v1
+apiVersion: v2
 kind: Namespace
 metadata:
   name: web-previews

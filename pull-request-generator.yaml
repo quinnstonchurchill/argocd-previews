@@ -33,14 +33,21 @@ spec:
         - resources-finalizer.argocd.argoproj.io
     spec:
       # https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Security/#templated-project-field
-      project: default
+      project: web-previews
       # which Git repository to extract the desired Application manifests
       # should be ops repo if we're storing manifests here
       source:
         repoURL: https://github.com/quinnstonchurchill/argocd-previews.git
         # SHA of the head of the pull request
         targetRevision: "{{head_sha}}"
-        path: helm/
+        # path: kustomize/overlays/preview
+        path: helm
+        helm:
+          parameters:
+            - name: "image.tag"
+              value: "web-pr-{{head_sha}}"
+            # - name: "service.type"
+            #   value: LoadBalancer
       # Defines which Kubernetes cluster/namespace to deploy to
       destination:
         # TODO change to EKS url
