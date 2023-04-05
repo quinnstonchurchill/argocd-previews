@@ -1,3 +1,4 @@
+# empty chart
 apiVersion: v2
 description: Previews environment
 name: web-previews
