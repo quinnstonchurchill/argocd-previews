@@ -8,7 +8,7 @@ spec:
   generators:
     - pullRequest:
         # When using a Pull Request generator, the ApplicationSet controller polls every `requeueAfterSeconds` interval (defaulting to every 30 minutes) to detect changes.
-        requeueAfterSeconds: 300
+        requeueAfterSeconds: 60
         # Specify which repo's pull requests we want to watch
         github:
           # Github organization
